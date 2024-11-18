@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #0d0d0e);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #0083b0;
+        }
+        form {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0c0c0c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #005f78;
+        }
+        .message {
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        .error {
+            color: rgb(105, 82, 82);
+        }
+        .success {
+            color: green;
+        }
+        .hidden {
+            display: none;
+        }
+        .small-text {
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login / Registro</h1>
+
+        <!-- Mostrar mensajes de error o éxito -->
+        {{if .Error}}
+        <p class="message error">{{.Error}}</p>
+        {{end}}
+        {{if .Message}}
+        <p class="message success">{{.Message}}</p>
+        {{end}}
+
+        <!-- Sección visible solo cuando el usuario está logueado -->
+        <div id="loggedInSection" class="{{if not .LoggedIn}}hidden{{end}}">
+            <h2>Bienvenido, {{.Usuario}}</h2>
+            <form action="/logout" method="post">
+                <button type="submit">Cerrar sesión</button>
+            </form>
+            <form action="/change-name" method="post">
+                <label for="newName">Nuevo Nombre:</label>
+                <input type="text" id="newName" name="newName" required>
+                <button type="submit">Cambiar Nombre</button>
+            </form>
+            <form action="/delete-account" method="post">
+                <button type="submit" style="background-color: red;">Eliminar Cuenta</button>
+            </form>
+        </div>
+
+        <!-- Sección visible solo cuando el usuario NO está logueado -->
+        <div id="loggedOutSection" class="{{if .LoggedIn}}hidden{{end}}">
+            <form action="/login" method="post">
+                <h2>Iniciar sesión</h2>
+                <label for="correo">Correo:</label>
+                <input type="email" id="correo" name="correo" required>
+                <label for="clave">Contraseña:</label>
+                <input type="password" id="clave" name="clave" required>
+                <button type="submit">Iniciar sesión</button>
+            </form>
+
+            <form action="/register" method="post">
+                <h2>Registrarse</h2>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+                <label for="correo">Correo:</label>
+                <input type="email" id="correo" name="correo" required>
+                <label for="clave">Contraseña:</label>
+                <input type="password" id="clave" name="clave" required>
+                <button type="submit">Registrarse</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
